@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="gecompt" mutable="true" name="application.objects.Categories" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="categories">
+        <id name="id" type="int" column="id">
+            <generator class="assigned"/>
+        </id>
+        
+        <many-to-one class="application.objects.Categories" column="id_super_categoy" insert="true" name="categories"  update="true"/>
+        
+        <property length="32" column="name" not-null="true" lazy="false" name="name" optimistic-lock="true" type="string"/>
+
+        <property column="referenced_web" not-null="true" generated="never" lazy="false" name="referencedWeb" optimistic-lock="true" type="boolean" />
+
+        <property generated="never" lazy="false" name="referencedSellers" optimistic-lock="true" type="boolean" column="referenced_sellers" not-null="true"/>
+
+
+        <set fetch="select" inverse="true" lazy="true" mutable="true" name="productses" optimistic-lock="true" sort="unsorted" table="products">
+            <key on-delete="noaction" column="id_category"/>
+            <one-to-many class="application.objects.Products" not-found="exception"/>
+        </set>
+
+        <list fetch="select" inverse="true" lazy="true" mutable="true" name="categorieses" optimistic-lock="true" table="categories">
+            <key on-delete="noaction" column="id_super_categoy"/>
+            <index></index>
+            <one-to-many class="application.objects.Categories" not-found="exception"/>
+        </list>
+    </class>
+</hibernate-mapping>

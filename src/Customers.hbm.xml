@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="gecompt" name="application.objects.Customers" table="customers">
+        <id name="id" type="int" column="id">
+            <generator class="assigned"/>
+        </id>
+        
+
+        <property name="surname" type="string"/>
+
+        <property name="firstName" type="string" length="64" column="first_name" not-null="true"/>
+
+        <property name="gender" type="boolean" column="gender"/>
+
+		<property name="phone" type="string" length="32" column="phone"/>
+        
+        <property name="societyName" column="society_name" length="64" type="string" />
+
+        <many-to-one class="application.objects.Addresses" column="id_address" name="addresses"/>
+        
+<!--        <set inverse="true" lazy="true" mutable="true" name="transactionses" table="transactions">
+            <key on-delete="noaction" column="id_customer" not-null="true"/>
+            <one-to-many class="application.objects.Transactions" not-found="exception"/>
+        </set>
+-->
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,7 @@
+.text{
+	-fx-font : 14 Arial;
+}
+
+.listview .list-cell{
+	-fx-alignement: center;
+}

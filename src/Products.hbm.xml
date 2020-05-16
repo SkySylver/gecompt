@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="application.objects.Products" table="products">
+        
+		<id name="productId" type="int" column="id">
+            <generator class="identity">
+			</generator>
+        </id>
+		
+        <many-to-one class="application.objects.Categories" column="id_category" name="categories"/>
+		
+        <many-to-one name="vat" column="id_vat" />
+		
+        <property name="name" column="name" length="64" not-null="true" type="string"/>
+		
+        <property name="description" column="description" length="65535" not-null="true" type="string"/>
+		
+        <property name="priceDf" column="price_df" type="big_decimal" precision="10" scale="3" not-null="true"/>
+
+        <property name="referencedWeb" column="referenced_web" not-null="true" type="boolean"/>
+
+        <property name="referencedSellers" column="referenced_sellers" type="boolean" not-null="true"/>
+
+		<set fetch="select" cascade="all" inverse="true" mutable="true" name="stocks" optimistic-lock="true" sort="unsorted" table="stock">
+            <key on-delete="noaction" column="id_product" not-null="true"/>
+            <one-to-many class="application.objects.Stock" not-found="exception"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

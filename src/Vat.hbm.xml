@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="application.objects.Vat" table="vat">
+        <id name="id" column="id" type="byte">
+            <generator class="assigned"/>
+        </id>
+        <property name="pourcentage" type="big_decimal" column="pourcentage" not-null="true" precision="10" scale="5" />
+    </class>
+</hibernate-mapping>

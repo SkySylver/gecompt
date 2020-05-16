@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    <class catalog="gecompt" name="application.objects.Stores" table="stores">
+        
+        <id name="id" column="id" type="int">
+            <generator class="assigned"/>
+        </id>
+        
+        <many-to-one class="application.objects.Addresses" column="id_address" name="addresses" not-null="false"/>
+
+        <property name="name" column="name" length="32" not-null="true" type="string" />
+
+        <set inverse="true" lazy="true" mutable="true" name="sellerses" table="sellers">
+            <key column="id_store"/>
+            <one-to-many class="application.objects.Sellers"/>
+        </set>
+    </class>
+</hibernate-mapping>

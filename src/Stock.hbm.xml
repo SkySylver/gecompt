@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="true" default-access="property" default-cascade="none" default-lazy="true">
+    
+    <class catalog="gecompt" dynamic-insert="false" dynamic-update="false" mutable="true" name="application.objects.Stock" optimistic-lock="version" polymorphism="implicit" select-before-update="false" table="stock">
+
+        <composite-id class="application.objects.StockId" mapped="false" name="id" unsaved-value="undefined">
+            <key-property name="idStore" type="int">
+                <column name="id_store"/>
+            </key-property>
+            
+            <key-property name="idProduct" type="int">
+                <column name="id_product"/>
+            </key-property>
+        </composite-id>
+        
+        <property generated="never" lazy="false" name="amount" optimistic-lock="true" type="int" unique="false">
+            <column name="amount" not-null="true"/>
+        </property>
+
+		<many-to-one class="application.objects.Products" fetch="select" insert="false" name="product" not-found="exception" optimistic-lock="true" update="false">
+            <column name="id_product" not-null="true"/>
+        </many-to-one>
+
+		<many-to-one class="application.objects.Stores" fetch="select" insert="false" name="store" not-found="exception" optimistic-lock="true" update="false">
+            <column name="id_store" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

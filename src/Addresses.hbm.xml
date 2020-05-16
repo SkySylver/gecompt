@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="application.objects.Addresses" table="addresses">
+        <id name="id" column="id" type="int">
+            <generator class="identity"/>
+        </id>
+        <property name="number" column="number" type="int"/>
+        <property name="street" column="street" type="string" length="64"/>
+        <property name="city" type="string" column="city" length="64"/>
+        
+        
+        <set name="storeses" table="stores">
+            <key on-delete="noaction" column="id_address"/>
+            <one-to-many class="application.objects.Stores"/>
+        </set>
+        
+
+		<set name="customers" table="customers">
+            <key on-delete="noaction" column="id_address"/>
+            <one-to-many class="application.objects.Customers"/>
+        </set>
+    </class>
+</hibernate-mapping>

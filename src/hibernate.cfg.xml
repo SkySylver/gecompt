@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+    	<property name="hibernate.enable_lazy_load_no_trans">true</property>
+		<property name="current_session_context_class">thread</property>
+		<property name="hbm2ddl.auto">update</property> 
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3308/gecompt?serverTimezone=UTC</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+
+	<mapping resource="Vat.hbm.xml"/>
+	<mapping resource="Products.hbm.xml"/>
+	<mapping resource="Addresses.hbm.xml"/>
+	<mapping resource="Customers.hbm.xml"/>
+	<mapping resource="Sellers.hbm.xml"/>
+	<mapping resource="Stores.hbm.xml"/>
+	<mapping resource="Categories.hbm.xml"/>
+	<mapping resource="Stock.hbm.xml"/>
+	<mapping resource="Transactions.hbm.xml"/>
+	<mapping resource="ProductsTransactionsHistories.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>
