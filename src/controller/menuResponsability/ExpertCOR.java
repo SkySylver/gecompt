@@ -2,15 +2,12 @@ package controller.menuResponsability;
 
 import java.util.ArrayList;
 
-import application.objects.ObjectCOR;
 import controller.AppController;
 import javafx.scene.Node;
-import javafx.scene.control.TableView;
 
 public abstract class ExpertCOR {
 	protected ExpertCOR next;
 	protected String value;
-	protected TableView<ObjectCOR> table;
 	
 	public ExpertCOR(ExpertCOR n) {
 		next = n;

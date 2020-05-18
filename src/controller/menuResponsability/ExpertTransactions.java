@@ -41,6 +41,7 @@ public class ExpertTransactions extends ExpertCOR {
 		value = "Factures";
 		initView();
 		initEvents();
+		initCss();
 		table.setItems(FXCollections.observableArrayList(listTransactions));
 	}
 
@@ -60,12 +61,19 @@ public class ExpertTransactions extends ExpertCOR {
 
 
 		table.getColumns().setAll(transactionId, transactionCustomer, transactionSeller, transactionDate, transactionPayed, new DetailsTransactionColumn(), new DeleteColumn<Transactions>(Transactions.class));
-		
+
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		recap = new VBox(table, createTransaction);
 
 		resetView();
 	}
 
+	private void initCss() {
+		table.getStyleClass().add("table");
+		view.getStyleClass().add("view");
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+	}
+	
 	protected void initEvents() {
 		createTransaction.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override

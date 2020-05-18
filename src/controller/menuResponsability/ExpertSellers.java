@@ -30,6 +30,7 @@ public class ExpertSellers extends ExpertCOR{
 	private ChoiceBox<String> choiceStores = new ChoiceBox<String>();
 
 	private Button addStore = new Button("Ajouter");
+	private HBox addZone = new HBox();
 	
 	
 	private SellersDAO DAO = SellersDAO.getInstance();
@@ -42,6 +43,8 @@ public class ExpertSellers extends ExpertCOR{
 		value = "Vendeurs";
 		initView();
 		initEvents();
+		initCss();
+		initAddZone();
 	}
 
 
@@ -56,6 +59,7 @@ public class ExpertSellers extends ExpertCOR{
 		
 		
 		table.getColumns().addAll(sellersSurname, sellersFirstName, sellersPhone, sellersStores);
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		table.setEditable(true);
 		
 		fieldFirstName.setPromptText("Prénom");
@@ -64,10 +68,19 @@ public class ExpertSellers extends ExpertCOR{
 
 		//choiceStores.getItems().setAll("", "Choisir un magasin");
 		
-		
-		view.getChildren().setAll(table, new HBox(fieldSurname, fieldFirstName, fieldPhone, choiceStores, addStore));
+		view.getChildren().setAll(table, addZone);
 	}
-
+	
+	private void initAddZone() {
+		addZone.getChildren().setAll(new HBox(fieldSurname, fieldFirstName, fieldPhone, choiceStores, addStore));
+	}
+	
+	private void initCss() {
+		table.getStyleClass().add("table");
+		view.getStyleClass().add("view");
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		addZone.getStyleClass().add("addZone");
+	}
 
 	protected void initEvents() {
 		choiceStores.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
@@ -88,7 +101,7 @@ public class ExpertSellers extends ExpertCOR{
 		});
 		
 		
-		addStore.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			addStore.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
 				Sellers temp = new Sellers(fieldSurname.getText(), fieldFirstName.getText(), fieldPhone.getText(), fieldStore);

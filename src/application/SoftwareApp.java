@@ -17,7 +17,7 @@ public class SoftwareApp {
 	private static SoftwareApp instance = new SoftwareApp();
 
 	private SoftwareApp() {
-		Application.setUserAgentStylesheet(Application.STYLESHEET_CASPIAN);
+		Application.setUserAgentStylesheet(Application.STYLESHEET_MODENA);
 		StyleManager.getInstance().addUserAgentStylesheet(getClass().getResource("/view/style.css").toString());
 	}
 

@@ -45,7 +45,8 @@ public class Categories extends ObjectCOR implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "[Id :" + id + "; Name:" + name + "; web:"+ referencedSellers +"; sellers: "+referencedSellers +"]";
+		return name;
+		//return "[Id :" + id + "; Name:" + name + "; web:"+ referencedSellers +"; sellers: "+referencedSellers +"]";
 
 	}
 	

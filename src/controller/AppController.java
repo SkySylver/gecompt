@@ -36,17 +36,24 @@ public class AppController extends AbstractController{
 		stage.setTitle("Digicom - Comptabilité");
 
 		initExperts();
+		initActions();
+		initCss();
+		
 		menu.getItems().setAll(menuExpert.getAllValues());
-		menu.setMaxWidth(200);
+		menu.getStyleClass().add("menu");
 		
 		sp.getItems().setAll(menu);
 		
-		initActions();
 	}
+	
+	private void initCss() {
+		sp.getStyleClass().add("view");
+		//table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+	}
+	
 	
 	public void initExperts() {
 		menuExpert = new ExpertTransactions(new ExpertCategoriesProducts(new ExpertSellers(new ExpertCustomers(new ExpertStores(new ExpertAddresses(null))))));
-		
 	}
 	
 	public void initActions() {

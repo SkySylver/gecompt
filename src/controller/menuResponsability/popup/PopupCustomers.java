@@ -17,7 +17,6 @@ public class PopupCustomers {
 	
 	public static PopupCustomers getInstance() {
 		return instance;
-		
 	}
 	
 	private PopupCustomers(ExpertCustomers expert) {
@@ -30,8 +29,6 @@ public class PopupCustomers {
 	
 	
 	public Customers display() {
-
-
 		Button selectAdd = new Button("Selectionner !");
 		selectAdd.setOnMouseClicked(new EventHandler<MouseEvent>() {
 

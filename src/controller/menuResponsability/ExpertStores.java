@@ -33,13 +33,16 @@ public class ExpertStores extends ExpertCOR {
 	private Label addressName = new Label("");
 	private Addresses addressTemp;
 	private ChoiceBox<String> choixAddress = new ChoiceBox<String>();
-
+	private HBox addZone;
+	private VBox addPanel;
 
 	public ExpertStores(ExpertCOR n) {
 		super(n);
 		value = "Magasins";
+		initAddZone();
 		initView();
 		initEvents();
+		initCss();
 	}
 
 	
@@ -49,16 +52,27 @@ public class ExpertStores extends ExpertCOR {
 		AddressColumn<Stores >storesAddresses = new AddressColumn<Stores>("Adresse", "addresses", Stores.class);		
 				
 		table.getColumns().addAll(storesName, storesAddresses);
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		table.setEditable(true);
 		
-		choixAddress.getItems().setAll("", "Choisir une adresse");
 
-		nameField.setPromptText("Nom du magasin");
-		vieew.getChildren().addAll(table, new VBox(addText, new HBox(nameField, choixAddress, add), addressName));
+		vieew.getChildren().addAll(table, addPanel);
 	}
 
 
+	private void initAddZone() {
+		nameField.setPromptText("Nom du magasin");
+		choixAddress.getItems().setAll("", "Choisir une adresse");
+		addZone = new HBox(nameField, choixAddress, add);
+		addPanel = new VBox(addText, addZone, addressName);
+	}
 	
+	private void initCss() {
+		table.getStyleClass().add("table");
+		vieew.getStyleClass().add("view");
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		addZone.getStyleClass().add("addZone");
+	}
 	
 	protected void initEvents() {
 		choixAddress.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {

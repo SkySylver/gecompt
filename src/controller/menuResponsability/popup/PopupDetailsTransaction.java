@@ -2,18 +2,14 @@ package controller.menuResponsability.popup;
 
 import application.objects.Products;
 import application.objects.ProductsTransactionsHistories;
-import application.objects.Stock;
 import application.objects.Transactions;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
+import controller.menuResponsability.element.IntegerEditableColumn;
 import javafx.collections.FXCollections;
 import javafx.scene.Scene;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -38,9 +34,11 @@ public class PopupDetailsTransaction {
 	private void initView() {
 		TableColumn<ProductsTransactionsHistories, Products> columnProduct = new TableColumn<ProductsTransactionsHistories, Products>(
 				"Produit");
-		TableColumn<ProductsTransactionsHistories, Integer> columnAmount = new TableColumn<ProductsTransactionsHistories, Integer>(
-				"Quantité");
+		
 
+
+		IntegerEditableColumn<ProductsTransactionsHistories> columnAmount = new IntegerEditableColumn<ProductsTransactionsHistories>("Quantité", "amount", ProductsTransactionsHistories.class);
+		
 		columnProduct.setCellValueFactory(new PropertyValueFactory<>("product"));
 		columnProduct.setCellFactory(
 				new Callback<TableColumn<ProductsTransactionsHistories, Products>, TableCell<ProductsTransactionsHistories, Products>>() {
@@ -66,7 +64,6 @@ public class PopupDetailsTransaction {
 					}
 				});
 
-		columnAmount.setCellValueFactory(new PropertyValueFactory<ProductsTransactionsHistories, Integer>("amount"));
 
 		table.getColumns().setAll(columnProduct, columnAmount);
 		view.getItems().setAll(table);

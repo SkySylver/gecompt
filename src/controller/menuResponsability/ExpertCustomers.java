@@ -51,7 +51,8 @@ public class ExpertCustomers extends ExpertCOR {
 
  		initView();
 		initEvents();
-		
+		initAddZone();
+		initCss();
 		table.setItems(FXCollections.observableArrayList(DAO.listAll()));
 	}
 
@@ -78,12 +79,24 @@ public class ExpertCustomers extends ExpertCOR {
 		
 		
 		table.getColumns().addAll(customersGender, customersSurname, customersFirstName, customersPhone, customersSociety, customersAddress, new DeleteColumn<Customers>(Customers.class));
+
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		table.setEditable(true);
 		
 		
+		//View
+		view.getChildren().setAll(table);
 		
-		
-		
+	}
+	
+	private void initCss() {
+		table.getStyleClass().add("table");
+		view.getStyleClass().add("view");
+		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+	}
+	
+	private void initAddZone() {
+
 		fieldFirstName.setPromptText("Prénom");
 		fieldSurname.setPromptText("Nom");
 		fieldPhone.setPromptText("Téléphone");
@@ -97,15 +110,13 @@ public class ExpertCustomers extends ExpertCOR {
 		fieldFemale.setToggleGroup(fieldGender);
 		
 		HBox addZone = new HBox(fieldSurname, fieldFirstName, new VBox(fieldFemale, fieldMale), choixAddress, fieldSociety, fieldPhone, addCustomer);
+		addZone.getStyleClass().add("addZone");
 		
-		
-		//View
-		view.getChildren().setAll(table, addZone);
-		
+		view.getChildren().add(addZone);
 	}
 	
-
-
+	
+	
 	protected void initEvents() {
 		choixAddress.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
 			@Override
