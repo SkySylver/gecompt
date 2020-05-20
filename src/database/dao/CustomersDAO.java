@@ -35,4 +35,15 @@ public class CustomersDAO extends DaoCOR{
 		session.close();
 		return result;
 	}
+	
+	public Customers getById(int id) {
+		
+		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+
+		Customers result = (Customers) session.get(Customers.class, id);
+			
+		session.close();
+		return result;
+		
+	}
 }

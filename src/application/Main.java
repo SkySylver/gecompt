@@ -9,7 +9,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		SoftwareApp.getInstance().update(primaryStage, "loginView.fxml", LoginController.getInstance(), false);
-		
 		primaryStage.show();
 	}
 	

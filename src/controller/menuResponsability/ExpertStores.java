@@ -48,7 +48,7 @@ public class ExpertStores extends ExpertCOR {
 	
 	@SuppressWarnings({ "unchecked" })
 	protected void initView() {
-		TableColumn<Stores, String> storesName = new StringEditableColumn<Stores>("Nom", "name", Stores.class);
+		StringEditableColumn<Stores> storesName = new StringEditableColumn<Stores>("Nom", "name", Stores.class);
 		AddressColumn<Stores >storesAddresses = new AddressColumn<Stores>("Adresse", "addresses", Stores.class);		
 				
 		table.getColumns().addAll(storesName, storesAddresses);

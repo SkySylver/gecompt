@@ -51,7 +51,8 @@ public class ExpertCategories extends ExpertCOR {
 		
 		initAddZone();
 		
-		table.setItems(FXCollections.observableArrayList(dao.listAll()));
+		listCat = dao.listAll();
+		table.setItems(FXCollections.observableArrayList(listCat));
 
 		view.getChildren().setAll(table, addZone);
 	}
@@ -86,10 +87,11 @@ public class ExpertCategories extends ExpertCOR {
 		addCategory.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				Categories tempcat = new Categories(categoryNameField.getText(), selectedCat,
-						checkReferencedWeb.isSelected(), checkReferencedSellers.isSelected());
-				selectedCat.getCategorieses().add(tempcat);
+				Categories tempcat = new Categories(categoryNameField.getText(), selectedCat, checkReferencedWeb.isSelected(), checkReferencedSellers.isSelected());
+				if(selectedCat !=null ) selectedCat.getCategorieses().add(tempcat);
 				dao.save(tempcat);
+				listCat.add(tempcat);
+				update();
 			}
 		});
 
@@ -121,6 +123,9 @@ public class ExpertCategories extends ExpertCOR {
 			table.setItems(FXCollections.observableArrayList(currentCategory.getCategorieses()));
 		}
 	}
+	
+	
+	
 
 	public void setCurrentCategory(Categories currentCategory) {
 		try {

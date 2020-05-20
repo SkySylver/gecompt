@@ -7,7 +7,7 @@
             <generator class="assigned"/>
         </id>
         
-        <many-to-one class="application.objects.Categories" column="id_super_categoy" insert="true" name="categories"  update="true"/>
+        <many-to-one class="application.objects.Categories" column="id_super_categoy" insert="true" name="categories" update="true"/>
         
         <property length="32" column="name" not-null="true" lazy="false" name="name" optimistic-lock="true" type="string"/>
 

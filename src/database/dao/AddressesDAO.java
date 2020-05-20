@@ -36,7 +36,28 @@ public class AddressesDAO extends DaoCOR {
 		return result;
 }
 
+	public Addresses getById(int id) {
+		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+		Addresses result = (Addresses) session.get(Addresses.class, id);
+		session.close();
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Addresses> list(String filter){
+		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+		
+		String querys = "from application.objects.Addresses as add WHERE concat(add.number, ' ', add.street, ' ', add.city) LIKE '" + filter +"'";
 
+		Query<Addresses> q = session.createQuery(querys);
+		List<Addresses> result = (List<Addresses>)q.list();
+				
+		tx.commit();
+		session.close();
+
+		return result;
+}
 
 
 }

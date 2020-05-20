@@ -1,6 +1,7 @@
 package controller.menuResponsability;
 
 import application.objects.Addresses;
+import controller.menuResponsability.addZone.AddZoneAddress;
 import controller.menuResponsability.element.DeleteColumn;
 import controller.menuResponsability.element.IntegerEditableColumn;
 import controller.menuResponsability.element.StringEditableColumn;
@@ -11,112 +12,96 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+public class ExpertAddresses extends ExpertCOR {
 
-public class ExpertAddresses extends ExpertCOR{
-	
 	private AddressesDAO DAO = AddressesDAO.getInstance();
 	private TableView<Addresses> table = new TableView<Addresses>();
-
-	private Text responseText = new Text();
-	private TextField number = new TextField();
-	private TextField street = new TextField();
-	private TextField city = new TextField();
-	private Button addButton = new Button("Ajouter");
-	private VBox vieew = new VBox();
+	private HBox filterZone;
+	private VBox view = new VBox();
 
 	private Button selectAdd = new Button("Selectionner !");
-	
-	
+
 	public ExpertAddresses(ExpertCOR n) {
 		super(n);
 		value = "Adresses";
 		initView();
-		initEvents();
-		initAddZone();
+		initFilterZone();
 		initCss();
+
+		view.getChildren().addAll(filterZone, table, new Label("Ajouter une addresse :"), new AddZoneAddress());
 	}
-	
-	
-	
+
 	@SuppressWarnings("unchecked")
 	protected void initView() {
-		IntegerEditableColumn<Addresses> addressNumber = new IntegerEditableColumn<Addresses>("Numéro", "number", Addresses.class);
-		StringEditableColumn<Addresses> addressStreet = new StringEditableColumn<Addresses>("Rue", "street", Addresses.class);
-		StringEditableColumn<Addresses> addressCity = new StringEditableColumn<Addresses>("Ville", "city", Addresses.class);
-		
-		table.getColumns().addAll(addressNumber, addressStreet, addressCity, new DeleteColumn<Addresses>(Addresses.class));
-		table.setEditable(true);
+		IntegerEditableColumn<Addresses> addressNumber = new IntegerEditableColumn<Addresses>("Numéro", "number",
+				Addresses.class);
+		StringEditableColumn<Addresses> addressStreet = new StringEditableColumn<Addresses>("Rue", "street",
+				Addresses.class);
+		StringEditableColumn<Addresses> addressCity = new StringEditableColumn<Addresses>("Ville", "city",
+				Addresses.class);
 
-		vieew.getChildren().addAll(table, new Label("Ajouter une addresse :"));
+		table.getColumns().addAll(addressNumber, addressStreet, addressCity,
+				new DeleteColumn<Addresses>(Addresses.class));
+		table.setEditable(true);
 	}
-	
-	
+
 	private void initCss() {
 		table.getStyleClass().add("table");
-		vieew.getStyleClass().add("view");
+		view.getStyleClass().add("view");
 		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	}
-	
-	private void initAddZone() {
-		number.setPromptText("Numéro");
-		street.setPromptText("Rue");
-		city.setPromptText("Ville");
-		HBox addZone = new HBox(number, street, city, addButton);
 
-		addZone.getStyleClass().add("addZone");
-		
-		addButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+	private void initFilterZone() {
+		TextField filterField = new TextField();
+		Button filterApply = new Button("Chercher");
+
+		filterField.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			@Override
-			public void handle(MouseEvent event) {			
-				try {
-					Addresses add = new Addresses(Integer.parseInt(number.getText()), street.getText(), city.getText());
-					DAO.save(add);
-					table.getItems().add(add);
-					responseText.setText("Adresse ajoutée !");
-				}
-				catch(Exception e) {
-					responseText.setText("Saisie invalide !");
-				}
-			}});
-		
-
-		vieew.getChildren().addAll(addZone, responseText);
-	}
-	
-
-	protected void initEvents() {
-
-		selectAdd.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				((Stage) vieew.getScene().getWindow()).close();
+			public void handle(KeyEvent event) {
+				if (event.getCode().equals(KeyCode.ENTER))
+					table.setItems(FXCollections.observableArrayList(DAO.list(filterField.getText() + "%")));
 			}
 		});
-	}
-	
-	
-	
+		
+		filterApply.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				table.setItems(FXCollections.observableArrayList(DAO.list(filterField.getText() + "%")));
+			}
+		});
+		filterZone = new HBox(filterField, filterApply);
 
-	public TableView<Addresses> getTable(){
+	}
+
+	public TableView<Addresses> getTable() {
 		return table;
 	}
-	
+
 	@Override
 	public VBox chargerMenu() {
 		table.setItems(FXCollections.observableArrayList(DAO.listAll()));
-		return vieew;
+		return view;
 	}
-	
+
 	public void setModal(boolean b) {
-		if(b) vieew.getChildren().add(selectAdd);
-		else vieew.getChildren().remove(selectAdd);
-		
+		selectAdd.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				((Stage) view.getScene().getWindow()).close();
+			}
+		});
+		if (b)
+			view.getChildren().add(selectAdd);
+		else
+			view.getChildren().remove(selectAdd);
+
 	}
-	
+
 }
