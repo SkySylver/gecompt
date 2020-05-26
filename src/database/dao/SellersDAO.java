@@ -2,13 +2,15 @@ package database.dao;
 
 import java.util.List;
 
-import org.hibernate.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import application.objects.Sellers;
 import database.HibernateUtil;
 
-@SuppressWarnings("deprecation")
 public class SellersDAO extends DaoCOR {
 
 	private static SellersDAO instance = new SellersDAO();
@@ -22,28 +24,38 @@ public class SellersDAO extends DaoCOR {
 	@SuppressWarnings("unchecked")
 	public List<Sellers> listAll(){
 		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
-
-		Query<Sellers> q = session.createQuery("from application.objects.Sellers");
-		List<Sellers> result = (List<Sellers>)q.list();
+		List<Sellers> result = session.createQuery("from application.objects.Sellers").list();
 				
-		tx.commit();
 		session.close();
 		return result;
 	}
 
 	
+	public List<Sellers> list(String filter){
+		int temp;
+			Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<Sellers> root = builder.createQuery(Sellers.class);
+			Root<Sellers> myObj = root.from(Sellers.class);
+
+			try {
+				temp = Integer.parseInt(filter);
+			}
+			catch (Exception e) {
+				temp = 0;
+			}
+			Predicate filterRestriction = builder.or(builder.equal(myObj.get("id"), temp), builder.like(myObj.get("surname"), "%"+filter+"%"), builder.like(myObj.get("firstName"), "%"+filter+"%"), builder.like(myObj.get("phone"), "%"+filter+"%"));
+			root.select(myObj).where(filterRestriction);
+		    
+		    List<Sellers> result = session.createQuery(root).getResultList();
+			session.close();
+		    return result;
+	}
+	
 	public Sellers loadCurrent() {
 		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
-
-		
-//		Query query = session.createQuery("from Sellers as sel WHERE sel.login = 'root'");
-//		query.setParameter("log", HibernateUtil.getInstance().getUsername());
-//		Sellers seller = (Sellers) query.getSingleResult();
-
-		Sellers seller = session.load(Sellers.class, new Integer(5));
-		tx.commit();
+		Sellers seller = session.load(Sellers.class, new Integer(1));
 		session.close();
 		return seller;
 	}

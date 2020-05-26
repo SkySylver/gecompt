@@ -2,6 +2,7 @@ package controller.menuResponsability;
 
 import application.objects.Sellers;
 import application.objects.Stores;
+import controller.menuResponsability.addZone.AddZoneSellers;
 import controller.menuResponsability.element.StringEditableColumn;
 import controller.menuResponsability.popup.PopupStores;
 import database.dao.SellersDAO;
@@ -9,32 +10,27 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class ExpertSellers extends ExpertCOR{  
 
-	private TextField fieldSurname = new TextField();
-	private TextField fieldFirstName = new TextField();
-	private TextField fieldPhone = new TextField();
-	private Stores fieldStore;
-
-	private ChoiceBox<String> choiceStores = new ChoiceBox<String>();
-
-	private Button addStore = new Button("Ajouter");
-	private HBox addZone = new HBox();
-	
-	
 	private SellersDAO DAO = SellersDAO.getInstance();
 	private TableView<Sellers> table = new TableView<Sellers>();
+	private HBox filterZone ;
+
 
 	private VBox view = new VBox();
 	
@@ -42,9 +38,10 @@ public class ExpertSellers extends ExpertCOR{
 		super(n);
 		value = "Vendeurs";
 		initView();
-		initEvents();
+		initFilterZone();
 		initCss();
-		initAddZone();
+		
+		view.getChildren().setAll(filterZone, table, new AddZoneSellers());
 	}
 
 
@@ -62,54 +59,33 @@ public class ExpertSellers extends ExpertCOR{
 		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		table.setEditable(true);
 		
-		fieldFirstName.setPromptText("Prénom");
-		fieldSurname.setPromptText("Nom");
-		fieldPhone.setPromptText("Téléphone");
-
-		//choiceStores.getItems().setAll("", "Choisir un magasin");
 		
-		view.getChildren().setAll(table, addZone);
 	}
 	
-	private void initAddZone() {
-		addZone.getChildren().setAll(new HBox(fieldSurname, fieldFirstName, fieldPhone, choiceStores, addStore));
-	}
 	
 	private void initCss() {
 		table.getStyleClass().add("table");
 		view.getStyleClass().add("view");
 		table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		addZone.getStyleClass().add("addZone");
 	}
 
-	protected void initEvents() {
-		choiceStores.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				switch (choiceStores.getItems().get((Integer) newValue)) {
-				case "":
-					fieldStore = null;
-//					addressName.setText("");
-					break;
-
-				case "Choisir un magasin":
-					fieldStore = new PopupStores(new ExpertStores(null)).display();
-//					addressName.setText(fieldStore.toString());
-					break;
-				}
-			}
-		});
-		
-		
-			addStore.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				Sellers temp = new Sellers(fieldSurname.getText(), fieldFirstName.getText(), fieldPhone.getText(), fieldStore);
-				DAO.save(temp);
-				table.getItems().add(temp);
-			}
-		});
 	
+	private void initFilterZone() {
+		TextField filterField = new TextField();
+		Button filterApply = new Button("Rechercher");
+		filterZone = new HBox();
+		filterZone = new HBox(filterField, filterApply);
+		
+		EventHandler<Event> temp = new EventHandler<Event>() {
+			@Override
+			public void handle(Event event) {
+				if((event.getEventType().equals(KeyEvent.KEY_RELEASED) && ((KeyEvent)event).getCode().equals(KeyCode.ENTER)) || event.getEventType().equals(MouseEvent.MOUSE_CLICKED))
+				table.setItems(FXCollections.observableArrayList(DAO.list(filterField.getText())));
+			}
+		};
+		
+		filterField.setOnKeyReleased(temp);
+		filterApply.setOnMouseClicked(temp);
 	}
 	
 

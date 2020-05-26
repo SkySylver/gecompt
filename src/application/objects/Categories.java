@@ -1,8 +1,6 @@
 package application.objects;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class Categories extends ObjectCOR implements java.io.Serializable {
@@ -15,7 +13,7 @@ public class Categories extends ObjectCOR implements java.io.Serializable {
 	private boolean referencedWeb;
 	private boolean referencedSellers;
 	private Set<Products> productses = new HashSet<Products>(0);
-	private List<Categories> categorieses = new ArrayList<Categories>(0);
+	private Set<Categories> categorieses = new HashSet<Categories>(0);
 
 	public Categories() {
 	}
@@ -33,7 +31,7 @@ public class Categories extends ObjectCOR implements java.io.Serializable {
 		this.referencedSellers = referencedSellers;
 	}
 	public Categories(int id, Categories categories, String name, boolean referencedWeb, boolean referencedSellers,
-			Set<Products> productses, List<Categories> categorieses) {
+			Set<Products> productses, Set<Categories> categorieses) {
 		this.id = id;
 		this.categories = categories;
 		this.name = name;
@@ -113,11 +111,11 @@ public class Categories extends ObjectCOR implements java.io.Serializable {
 		this.productses = productses;
 	}
 
-	public List<Categories> getCategorieses() {
+	public Set<Categories> getCategorieses() {
 		return this.categorieses;
 	}
 
-	public void setCategorieses(List<Categories> categorieses) {
+	public void setCategorieses(Set<Categories> categorieses) {
 		this.categorieses = categorieses;
 	}
 

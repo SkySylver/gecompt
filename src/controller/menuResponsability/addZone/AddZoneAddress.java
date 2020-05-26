@@ -20,6 +20,7 @@ public class AddZoneAddress extends HBox{
 	private Button addButton = new Button("Ajouter");
 	
 	public AddZoneAddress() {
+		super();
 		number.setPromptText("Numéro");
 		street.setPromptText("Rue");
 		city.setPromptText("Ville");

@@ -14,6 +14,7 @@ import javafx.util.Callback;
 
 public class AddressColumn<T extends ObjectCOR> extends TableColumn<T, Addresses> {
 
+	@SuppressWarnings("unchecked")
 	public AddressColumn(String displayName, String propertyName, Class<? extends ObjectCOR> typeParameterClass) {
 		super(displayName);
 

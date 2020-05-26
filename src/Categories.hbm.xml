@@ -21,10 +21,9 @@
             <one-to-many class="application.objects.Products" not-found="exception"/>
         </set>
 
-        <list fetch="select" inverse="true" lazy="true" mutable="true" name="categorieses" optimistic-lock="true" table="categories">
-            <key on-delete="noaction" column="id_super_categoy"/>
-            <index></index>
+        <set fetch="select" inverse="true" lazy="true" mutable="true" name="categorieses" optimistic-lock="true" table="categories">
+            <key on-delete="noaction" column="id_super_category"/>
             <one-to-many class="application.objects.Categories" not-found="exception"/>
-        </list>
+        </set>
     </class>
 </hibernate-mapping>

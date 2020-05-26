@@ -5,6 +5,8 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import application.objects.Addresses;
 import application.objects.Stores;
 import database.HibernateUtil;
 
@@ -28,12 +30,24 @@ public class StoresDAO extends DaoCOR {
 		Query<Stores> q = session.createQuery("from application.objects.Stores");
 		List<Stores> result = (List<Stores>)q.list();
 		
-//		List<Products> result = (List<Products>)session.createSQLQuery("SELECT id, name, description, price_df, referenced_web, referenced_sellers from Products").addEntity(Products.class).list();
-		
 		tx.commit();
 		session.close();
-		System.out.println(result);
 
+		return result;
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	public List<Stores> list(String filter){
+		
+		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+		
+		String querys = "from application.objects.Stores as str WHERE str.name like '%" + filter + "%' OR concat(str.addresses.number, ' ', str.addresses.street, ' ', str.addresses.city) LIKE '%" + filter + "%'";
+
+		List<Stores> result = (List<Stores>) session.createQuery(querys).list();
+		
+		//AddressesDAO.getInstance().list(filter);
+		session.close();
 
 		return result;
 	}
