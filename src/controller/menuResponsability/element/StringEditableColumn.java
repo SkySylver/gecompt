@@ -10,6 +10,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 public class StringEditableColumn<T extends ObjectCOR> extends TableColumn<T, String> {
 
+	@SuppressWarnings("unchecked")
 	public StringEditableColumn(String displayName, String propertyName, Class<? extends ObjectCOR> typeParameterClass) {
 		super(displayName);
 

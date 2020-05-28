@@ -2,16 +2,19 @@ package database.dao;
 
 import java.util.List;
 
-import org.hibernate.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import application.objects.Addresses;
 import application.objects.Stores;
 import database.HibernateUtil;
 
-@SuppressWarnings("deprecation")
-public class StoresDAO extends DaoCOR {
+
+public class StoresDAO extends DaoCOR<Stores> {
 
 	private static StoresDAO instance = new StoresDAO();
 	public static StoresDAO getInstance() {
@@ -19,34 +22,19 @@ public class StoresDAO extends DaoCOR {
 	}
 	
 	private StoresDAO() {
-	}
-
-	
-	@SuppressWarnings("unchecked")
-	public List<Stores> listAll(){
-		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
-
-		Query<Stores> q = session.createQuery("from application.objects.Stores");
-		List<Stores> result = (List<Stores>)q.list();
-		
-		tx.commit();
-		session.close();
-
-		return result;
+		super("from application.objects.Stores", Stores.class);
 	}
 	
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<Stores> list(String filter){
 		
 		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-		
 		String querys = "from application.objects.Stores as str WHERE str.name like '%" + filter + "%' OR concat(str.addresses.number, ' ', str.addresses.street, ' ', str.addresses.city) LIKE '%" + filter + "%'";
 
 		List<Stores> result = (List<Stores>) session.createQuery(querys).list();
-		
-		//AddressesDAO.getInstance().list(filter);
+	
 		session.close();
 
 		return result;
@@ -69,5 +57,11 @@ public class StoresDAO extends DaoCOR {
 		session.update(s);
 		tx.commit();
 		session.close();
+	}
+
+	@Override
+	protected Predicate getFilterRestriction(CriteriaBuilder builder, CriteriaQuery<Stores> root, Root<Stores> myObj, String filter) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

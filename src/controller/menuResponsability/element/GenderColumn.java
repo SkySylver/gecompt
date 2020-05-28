@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class GenderColumn <T extends ObjectCOR> extends TableColumn<T, Boolean> {
 
+	@SuppressWarnings("unchecked")
 	public GenderColumn(String displayName, String propertyName, Class<? extends ObjectCOR> typeParameterClass) {
 		super(displayName);
 		this.setEditable(true);

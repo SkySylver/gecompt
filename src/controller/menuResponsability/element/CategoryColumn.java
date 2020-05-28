@@ -15,6 +15,7 @@ import javafx.util.Callback;
 public class CategoryColumn<T extends ObjectCOR> extends TableColumn<T, Categories> {
 
 
+	@SuppressWarnings("unchecked")
 	public CategoryColumn(String displayName, String propertyName, Class<? extends ObjectCOR> typeParameterClass) {
 		super(displayName);
 

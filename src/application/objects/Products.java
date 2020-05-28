@@ -7,7 +7,6 @@ public class Products extends ObjectCOR implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	
 	private int productId = 0;
 	private Categories categories;
 	private Vat vat;

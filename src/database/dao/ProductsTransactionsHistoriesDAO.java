@@ -1,16 +1,13 @@
 package database.dao;
 
-import java.util.List;
-
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import application.objects.ProductsTransactionsHistories;
-import database.HibernateUtil;
 
-@SuppressWarnings("deprecation")
-public class ProductsTransactionsHistoriesDAO extends DaoCOR {
+public class ProductsTransactionsHistoriesDAO extends DaoCOR<ProductsTransactionsHistories> {
 
 	private static ProductsTransactionsHistoriesDAO instance = new ProductsTransactionsHistoriesDAO();
 
@@ -19,22 +16,24 @@ public class ProductsTransactionsHistoriesDAO extends DaoCOR {
 	}
 	
 	private ProductsTransactionsHistoriesDAO() {
-		super();
+		super("from application.objects.ProductsTransactionsHistories", ProductsTransactionsHistories.class);
 	}
 
-	
-	@SuppressWarnings("unchecked")
-	public List<ProductsTransactionsHistories> listAll(){
-		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
+	@Override
+	protected Predicate getFilterRestriction(CriteriaBuilder builder, CriteriaQuery<ProductsTransactionsHistories> root, Root<ProductsTransactionsHistories> myObj, String filter) {
+		int temp;
 
-		Query<ProductsTransactionsHistories> q = session.createQuery("from application.objects.ProductsTransactionsHistories");
-		List<ProductsTransactionsHistories> result = (List<ProductsTransactionsHistories>)q.list();
-
-		tx.commit();
-		session.close();
-
-		return result;
+		try {
+			temp = Integer.parseInt(filter);
+		} catch (Exception e) {
+			temp = 0;
+		}
+		
+		Predicate p = builder.or(builder.equal(myObj.get("id"), temp),
+				builder.like(myObj.get("surname"), "%" + filter + "%"),
+				builder.like(myObj.get("firstName"), "%" + filter + "%"),
+				builder.like(myObj.get("phone"), "%" + filter + "%"));
+		return p;
 	}
 
 }

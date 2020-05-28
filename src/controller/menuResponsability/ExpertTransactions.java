@@ -45,15 +45,17 @@ public class ExpertTransactions extends ExpertCOR {
 		value = "Factures";
 		initView();
 		initEvents();
-		initFilterZone();
 		initCss();
 		
+		view.getItems().setAll(recap);
 		table.setItems(FXCollections.observableArrayList(listTransactions));
 	}
 
 
 	@SuppressWarnings("unchecked")
 	protected void initView() {
+		initFilterZone();
+		
 		TableColumn<Transactions, Integer> transactionId = new TableColumn<Transactions, Integer>("Numéro facture");
 		CustomersColumn<Transactions> transactionCustomer = new CustomersColumn<Transactions>("Client", "customers", Transactions.class);
 		BigDecimalColumn<Transactions> transactionPayed = new BigDecimalColumn<Transactions>("Somme payée", "payedAmount", Transactions.class);

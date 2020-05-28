@@ -2,20 +2,16 @@ package database.dao;
 
 import java.util.List;
 
-import org.hibernate.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import application.objects.Customers;
 import database.HibernateUtil;
 
-@SuppressWarnings("deprecation")
-public class CustomersDAO extends DaoCOR {
-
+public class CustomersDAO extends DaoCOR<Customers> {
 	private static CustomersDAO instance = new CustomersDAO();
 
 	public static CustomersDAO getInstance() {
@@ -23,20 +19,7 @@ public class CustomersDAO extends DaoCOR {
 	}
 
 	private CustomersDAO() {
-		super();
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Customers> listAll() {
-		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
-
-		Query<Customers> q = session.createQuery("from application.objects.Customers");
-		List<Customers> result = (List<Customers>) q.list();
-
-		tx.commit();
-		session.close();
-		return result;
+		super("from application.objects.Customers", Customers.class);
 	}
 
 	public List<Customers> list(String filter) {
@@ -47,21 +30,26 @@ public class CustomersDAO extends DaoCOR {
 		CriteriaQuery<Customers> root = builder.createQuery(Customers.class);
 		Root<Customers> myObj = root.from(Customers.class);
 
+		root.select(myObj).where(getFilterRestriction(builder, root, myObj, filter));
+		List<Customers> result = session.createQuery(root).getResultList();
+
+		session.close();
+		return result;
+	}
+
+	@Override
+	protected Predicate getFilterRestriction(CriteriaBuilder builder, CriteriaQuery<Customers> root,
+			Root<Customers> myObj, String filter) {
 		int temp;
 		try {
 			temp = Integer.parseInt(filter);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			temp = 0;
 		}
-		
-		Predicate filterRestriction = builder.or(builder.equal(myObj.get("id"), temp), builder.like(myObj.get("surname"), filter+"%"), builder.like(myObj.get("firstName"), filter+"%"), builder.like(myObj.get("phone"), filter+"%"));
-		root.select(myObj).where(filterRestriction);
-	    Query<Customers> query = session.createQuery(root);
-	    
-	    List<Customers> result = query.getResultList();
-		session.close();
-	    return result;
+		Predicate p = builder.or(builder.equal(myObj.get("id"), temp), builder.like(myObj.get("surname"), filter + "%"),
+				builder.like(myObj.get("firstName"), filter + "%"), builder.like(myObj.get("phone"), filter + "%"));
+
+		return p;
 	}
 
 	public Customers getById(int id) {
@@ -70,4 +58,5 @@ public class CustomersDAO extends DaoCOR {
 		session.close();
 		return result;
 	}
+
 }

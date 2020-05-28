@@ -2,7 +2,7 @@ package application.objects;
 
 import java.math.BigDecimal;
 
-public class Vat implements java.io.Serializable {
+public class Vat extends ObjectCOR implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	

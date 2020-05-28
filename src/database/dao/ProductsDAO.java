@@ -1,58 +1,41 @@
 package database.dao;
 
-import java.util.List;
-
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import application.objects.Products;
-import database.HibernateUtil;
 
-
-@SuppressWarnings("deprecation")
-public class ProductsDAO extends DaoCOR{
-
+public class ProductsDAO extends DaoCOR<Products>{
 	private static ProductsDAO instance = new ProductsDAO();
 	public static ProductsDAO getInstance() {
 		return instance;
 	}
 	
 	private ProductsDAO() {
-		super();
+		super("from application.objects.Products", Products.class);
 	}
 
-	
-	@SuppressWarnings("unchecked")
-	public List<Products> listAll(){
-		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
+	@Override
+	protected Predicate getFilterRestriction(CriteriaBuilder builder, CriteriaQuery<Products> root, Root<Products> myObj, String filter) {
+		int temp;
+		try {
+			temp = Integer.parseInt(filter);
+		} catch (Exception e) {
+			temp = 0;
+		}
 
-		Query<Products> q = session.createQuery("from application.objects.Products");
-		List<Products> result = (List<Products>)q.list();
+		Predicate p = builder.or(builder.equal(myObj.get("productId"), temp),
+				builder.like(myObj.get("name"), "%" + filter + "%"),
+				builder.like(myObj.get("description"), "%" + filter + "%"),
+				builder.equal(myObj.get("priceDf"), "%"+temp+"%"),
+				builder.equal(myObj.get("amount"), "%"+temp+"%"));
 
-		tx.commit();
-		session.close();
-
-		return result;
+		return p;
 	}
+
 	
 	/*
-	public void persist(Products transientInstance) {
-
-			HibernateUtil.getInstance().getSessionFactory().getCurrentSession().persist(transientInstance);
-
-	}
-
-
-	public void delete(Products persistentInstance) {
-		try {
-			HibernateUtil.getInstance().getSessionFactory().getCurrentSession().delete(persistentInstance);
-			} catch (RuntimeException re) {
-		}
-	}
-
-
 	public Products findById(java.lang.Integer id) {
 		try {
 			Products instance = (Products) HibernateUtil.getInstance().getSessionFactory().getCurrentSession().get("result.Products", id);

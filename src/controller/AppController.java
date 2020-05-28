@@ -76,7 +76,6 @@ public class AppController extends AbstractController{
 	
 		
 	// Singleton
-
 	private static AppController instance = new AppController();
 
 	private AppController() {
@@ -87,6 +86,7 @@ public class AppController extends AbstractController{
 
 	// Getters / Setters
 
+	@SuppressWarnings("rawtypes")
 	public DaoCOR getDAO(Class<? extends ObjectCOR> typeParameterClass) {
 		return HibernateUtil.getInstance().getDAO(typeParameterClass);
 	}
@@ -122,7 +122,4 @@ public class AppController extends AbstractController{
 		this.rightNode = right;
 		updateView();
 	}
-
-
-	
 }

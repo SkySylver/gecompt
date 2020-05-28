@@ -19,9 +19,9 @@ public class HibernateUtil {
 
 	private String username;
 
-	private static HashMap<Class<? extends ObjectCOR>, DaoCOR> daos;
+	private static HashMap<Class<? extends ObjectCOR>, DaoCOR<? extends ObjectCOR>> daos;
 	static {
-		daos = new HashMap<Class<? extends ObjectCOR>, DaoCOR>();
+		daos = new HashMap<Class<? extends ObjectCOR>, DaoCOR<? extends ObjectCOR>>();
 		daos.put(Addresses.class, AddressesDAO.getInstance());
 		daos.put(Categories.class, CategoriesDAO.getInstance());
 		daos.put(Customers.class, CustomersDAO.getInstance());
@@ -32,7 +32,7 @@ public class HibernateUtil {
 		daos.put(Transactions.class, TransactionsDAO.getInstance());
 	}
 	
-	public DaoCOR getDAO(Class<? extends ObjectCOR> typeParameterClass) {
+	public DaoCOR<? extends ObjectCOR> getDAO(Class<? extends ObjectCOR> typeParameterClass) {
 		return daos.get(typeParameterClass);
 	}
 	

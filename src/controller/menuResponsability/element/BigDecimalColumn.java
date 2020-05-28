@@ -12,6 +12,7 @@ import javafx.util.converter.BigDecimalStringConverter;
 
 public class BigDecimalColumn<T extends ObjectCOR> extends TableColumn<T, BigDecimal> {
 
+	@SuppressWarnings("unchecked")
 	public BigDecimalColumn(String displayName, String propertyName, Class<? extends ObjectCOR> typeParameterClass) {
 		super(displayName);
 		this.setEditable(true);

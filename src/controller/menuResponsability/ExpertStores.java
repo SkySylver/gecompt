@@ -6,7 +6,6 @@ import controller.menuResponsability.element.AddressColumn;
 import controller.menuResponsability.element.StringEditableColumn;
 import database.dao.StoresDAO;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;

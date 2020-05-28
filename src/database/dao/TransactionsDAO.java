@@ -1,15 +1,14 @@
 package database.dao;
 
-import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import application.objects.Transactions;
-import database.HibernateUtil;
 
-@SuppressWarnings("deprecation")
-public class TransactionsDAO extends DaoCOR {
+
+public class TransactionsDAO extends DaoCOR<Transactions> {
 
 	private static TransactionsDAO instance = new TransactionsDAO();
 
@@ -18,25 +17,14 @@ public class TransactionsDAO extends DaoCOR {
 	}
 
 	private TransactionsDAO() {
+		super("from application.objects.Transactions", Transactions.class);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Transactions> listAll() {
-		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
+	@Override
+	protected Predicate getFilterRestriction(CriteriaBuilder builder, CriteriaQuery<Transactions> root,
+			Root<Transactions> myObj, String filter) {
 
-		Query<Transactions> q = session.createQuery("from application.objects.Transactions");
-		List<Transactions> result = (List<Transactions>) q.list();
-
-		tx.commit();
-		session.close();
-
-		return result;
+		return null;
 	}
-
-
-
-
-
 
 }

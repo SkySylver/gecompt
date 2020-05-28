@@ -12,6 +12,7 @@ import javafx.util.converter.IntegerStringConverter;
 
 public class IntegerEditableColumn<T extends ObjectCOR> extends TableColumn<T, Integer>  {
 	
+	@SuppressWarnings("unchecked")
 	public IntegerEditableColumn(String displayName, String propertyName, Class<? extends ObjectCOR> typeParameterClass) {
 		super(displayName);
 

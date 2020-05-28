@@ -17,6 +17,7 @@ public class DeleteColumn<T extends ObjectCOR> extends TableColumn<T, Void>{
     	super("");
 
 		cellFactory = new Callback<TableColumn<T, Void>, TableCell<T, Void>>() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public TableCell<T, Void> call(TableColumn<T, Void> param) {
 				final TableCell<T, Void> cell = new TableCell<T, Void>() {

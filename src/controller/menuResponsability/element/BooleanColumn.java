@@ -16,7 +16,8 @@ import javafx.util.Callback;
 public class BooleanColumn<T extends ObjectCOR> extends TableColumn<T, Boolean> {
 	private Callback<TableColumn<T, Boolean>, TableCell<T, Boolean>> cellFactory;
 
-    public BooleanColumn(String displayName, String propertyName, Class<? extends ObjectCOR> typeParameterClass) {
+    @SuppressWarnings("unchecked")
+	public BooleanColumn(String displayName, String propertyName, Class<? extends ObjectCOR> typeParameterClass) {
 		super(displayName);
 
 		setCellValueFactory(new PropertyValueFactory<>(propertyName));

@@ -14,6 +14,7 @@ import javafx.util.Callback;
 
 public class CustomersColumn<T extends ObjectCOR> extends TableColumn<T, Customers> {
 
+	@SuppressWarnings("unchecked")
 	public CustomersColumn(String displayName, String propertyName, Class<? extends ObjectCOR> typeParameterClass) {
 		super(displayName);
 		this.setEditable(true);

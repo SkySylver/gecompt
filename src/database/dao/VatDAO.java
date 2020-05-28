@@ -1,37 +1,27 @@
 package database.dao;
 
-import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import application.objects.Vat;
-import database.HibernateUtil;
 
-@SuppressWarnings("deprecation")
-public class VatDAO extends DaoCOR {
+public class VatDAO extends DaoCOR<Vat> {
 	private static VatDAO instance = new VatDAO();
 	public static VatDAO getInstance() {
 		return instance;
 	}
 	
 	private VatDAO() {
+		super("from application.objects.Vat", Vat.class);
 	}
-	
-	
-	@SuppressWarnings("unchecked")
-	public List<Vat> listAll(){
-		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
 
-		Query<Vat> q = session.createQuery("from application.objects.Vat");
-		List<Vat> result = (List<Vat>)q.list();
-		
-		tx.commit();
-		session.close();
-
-
-		return result;
+	@Override
+	protected Predicate getFilterRestriction(CriteriaBuilder builder, CriteriaQuery<Vat> root, Root<Vat> myObj,
+			String filter) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

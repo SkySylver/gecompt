@@ -2,16 +2,17 @@ package database.dao;
 
 import java.util.List;
 
-import org.hibernate.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import application.objects.Addresses;
 import database.HibernateUtil;
 
-@SuppressWarnings("deprecation")
-public class AddressesDAO extends DaoCOR {
-
+public class AddressesDAO extends DaoCOR<Addresses> {
 	private static AddressesDAO instance = new AddressesDAO();
 
 	public static AddressesDAO getInstance() {
@@ -19,22 +20,10 @@ public class AddressesDAO extends DaoCOR {
 	}
 	
 	private AddressesDAO() {
-		super();
+		super("from application.objects.Addresses");
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Addresses> listAll(){
-		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
 
-		Query<Addresses> q = session.createQuery("from application.objects.Addresses");
-		List<Addresses> result = (List<Addresses>)q.list();
-				
-		tx.commit();
-		session.close();
 
-		return result;
-}
 
 	public Addresses getById(int id) {
 		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
@@ -43,21 +32,27 @@ public class AddressesDAO extends DaoCOR {
 		return result;
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<Addresses> list(String filter){
 		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
 		
 		String querys = "from application.objects.Addresses as add WHERE concat(add.number, ' ', add.street, ' ', add.city) LIKE '" + filter +"'";
-
-		Query<Addresses> q = session.createQuery(querys);
-		List<Addresses> result = (List<Addresses>)q.list();
+		List<Addresses> result = (List<Addresses>)session.createQuery(querys).list();
 				
-		tx.commit();
 		session.close();
-
 		return result;
 }
+
+	
+	
+	
+	@Override
+	protected Predicate getFilterRestriction(CriteriaBuilder builder, CriteriaQuery<Addresses> root,
+			Root<Addresses> myObj, String filter) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 }

@@ -22,6 +22,7 @@ public class MainInserts {
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Random r = new Random();
 		HibernateUtil.getInstance().connect("localhost", "3308", "gecompt", "root", "");
