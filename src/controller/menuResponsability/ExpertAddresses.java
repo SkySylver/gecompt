@@ -7,6 +7,7 @@ import controller.menuResponsability.element.IntegerEditableColumn;
 import controller.menuResponsability.element.StringEditableColumn;
 import database.dao.AddressesDAO;
 import javafx.collections.FXCollections;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -61,21 +62,16 @@ public class ExpertAddresses extends ExpertCOR {
 	private void initFilterZone() {
 		TextField filterField = new TextField();
 		Button filterApply = new Button("Chercher");
-
-		filterField.setOnKeyReleased(new EventHandler<KeyEvent>() {
+		EventHandler<Event> filterEvent = new EventHandler<Event>() {
 			@Override
-			public void handle(KeyEvent event) {
-				if (event.getCode().equals(KeyCode.ENTER))
-					table.setItems(FXCollections.observableArrayList(DAO.list(filterField.getText() + "%")));
+			public void handle(Event event) {
+				if ((event.getEventType().equals(KeyEvent.KEY_RELEASED) && ((KeyEvent)event).getCode().equals(KeyCode.ENTER)) || event.getEventType().equals(MouseEvent.MOUSE_CLICKED))
+					table.setItems(FXCollections.observableArrayList(DAO.list(filterField.getText())));
 			}
-		});
+		};
 		
-		filterApply.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				table.setItems(FXCollections.observableArrayList(DAO.list(filterField.getText() + "%")));
-			}
-		});
+		filterField.setOnKeyReleased(filterEvent);
+		filterApply.setOnMouseClicked(filterEvent);
 		filterZone = new HBox(filterField, filterApply);
 
 	}

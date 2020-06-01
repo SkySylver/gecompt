@@ -69,7 +69,7 @@ public abstract class DaoCOR<T extends ObjectCOR> {
 	@SuppressWarnings("unchecked")
 	public List<T> listAll(){
 		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-		List<T> result = session.createQuery(listAllQueryString).list();
+		List<T> result = (List<T>)session.createQuery(listAllQueryString).list();
 				
 		session.close();
 		return result;

@@ -37,7 +37,7 @@ public class AddressesDAO extends DaoCOR<Addresses> {
 	public List<Addresses> list(String filter){
 		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
 		
-		String querys = "from application.objects.Addresses as add WHERE concat(add.number, ' ', add.street, ' ', add.city) LIKE '" + filter +"'";
+		String querys = "from application.objects.Addresses as add WHERE concat(add.number, ' ', add.street, ' ', add.city) LIKE '%" + filter +"%'";
 		List<Addresses> result = (List<Addresses>)session.createQuery(querys).list();
 				
 		session.close();

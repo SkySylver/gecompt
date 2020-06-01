@@ -64,16 +64,16 @@ public class ExpertCategoriesProducts extends ExpertCOR{
 				}				
 			}
 		});
-		
+		/*
 		categories.getTable().setRowFactory(tr -> {
 		    TableRow<Categories> row = new TableRow<Categories>();
 		    row.setOnMouseClicked(event -> {
-		        if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) 
+		        if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 3) 
 		        	products.setCurrentCategory(row.getItem());
 		        	if(row.getItem()!=null) categories.setCurrentCategory(row.getItem().getCategories());
 		    });
 		    return row;
-		});
+		});*/
 	}
 
 	

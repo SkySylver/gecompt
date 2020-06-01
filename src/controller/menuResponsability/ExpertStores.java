@@ -74,9 +74,6 @@ public class ExpertStores extends ExpertCOR {
 	}
 	
 	
-	
-	
-	
 
 	@Override
 	public VBox chargerMenu() {

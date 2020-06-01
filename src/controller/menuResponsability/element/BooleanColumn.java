@@ -31,62 +31,60 @@ public class BooleanColumn<T extends ObjectCOR> extends TableColumn<T, Boolean> 
 			AppController.getInstance().getDAO(typeParameterClass).update(t.getRowValue());
 		});
 		
-		
-		cellFactory = new Callback<TableColumn<T, Boolean>, TableCell<T, Boolean>>() {
-			@Override
-			public TableCell<T, Boolean> call(TableColumn<T, Boolean> param) {
-				final TableCell<T, Boolean> cell = new TableCell<T, Boolean>() {
-					private CheckBox checkBox;
-					{
-						checkBox = new CheckBox();
-						checkBox.selectedProperty().addListener(new ChangeListener<Boolean> () {
-							@Override
-			                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-			                    if(isEditing())
-			                        commitEdit(newValue == null ? false : newValue);
-			                }
-			            });
-						checkBox.setDisable(true);
-						
-						this.setGraphic(checkBox);
-						this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-						this.setEditable(true);
-					}
 
-					@Override
-					public void startEdit() {
-						super.startEdit();
-						if (isEmpty()) {
-							return;
-						}
-						checkBox.setDisable(false);
-						checkBox.requestFocus();
-					}
-
-					@Override
-					public void cancelEdit() {
-						super.cancelEdit();
-						checkBox.setDisable(true);
-					}
-
-			        public void commitEdit(Boolean value) {
-			            super.commitEdit(value);
-			            checkBox.setDisable(true);
-			        }
+	setCellFactory(new Callback<TableColumn<T, Boolean>, TableCell<T, Boolean>>() {
+		@Override
+		public TableCell<T, Boolean> call(TableColumn<T, Boolean> param) {
+			TableCell<T, Boolean> cell = new TableCell<T, Boolean>() {
+				private CheckBox checkBox;
+				{
+					checkBox = new CheckBox();
+					checkBox.selectedProperty().addListener(new ChangeListener<Boolean> () {
+						@Override
+		                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+		                    if(isEditing())
+		                        commitEdit(newValue == null ? false : newValue);
+		                }
+		            });
+					checkBox.setDisable(true);
 					
-					@Override
-					public void updateItem(Boolean item, boolean empty) {
-						super.updateItem(item, empty);
-						if (!isEmpty()) {
-							checkBox.setSelected(item);
-						}
-						else setGraphic(null);
-					}
-				};
-				return cell;
-			}
-		};
+					this.setGraphic(checkBox);
+					this.setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+					this.setEditable(true);
+				}
 
-	setCellFactory(cellFactory);
+				@Override
+				public void startEdit() {
+					super.startEdit();
+					if (isEmpty()) {
+						return;
+					}
+					checkBox.setDisable(false);
+					checkBox.requestFocus();
+				}
+
+				@Override
+				public void cancelEdit() {
+					super.cancelEdit();
+					checkBox.setDisable(true);
+				}
+
+		        public void commitEdit(Boolean value) {
+		            super.commitEdit(value);
+		            checkBox.setDisable(true);
+		        }
+				
+				@Override
+				public void updateItem(Boolean item, boolean empty) {
+					super.updateItem(item, empty);
+					if (!isEmpty()) {
+						checkBox.setSelected(item);
+					}
+					else setGraphic(null);
+				}
+			};
+			return cell;
+		}
+	});
 	}
 }

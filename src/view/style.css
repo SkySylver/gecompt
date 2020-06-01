@@ -2,6 +2,7 @@
 .text{
 	-fx-font : 14 Arial;
 	-fx-font-weight : bold;
+	-fx-text-fill: white;
 }
 
 
