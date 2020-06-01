@@ -49,7 +49,6 @@ public class ExpertProducts extends ExpertCOR {
 		value = "Produits";
 		listProducts = dao.listAll();
 		initView();
-		initEvents();
 		initAddZone();
 		initCss();
 		update();
@@ -146,9 +145,6 @@ public class ExpertProducts extends ExpertCOR {
 		
 	}
 
-	public void initEvents() {
-
-	}
 
 	public ProductsDAO getDAO() {
 		return dao;
